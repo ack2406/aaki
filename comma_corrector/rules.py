@@ -191,7 +191,7 @@ def check_zatem(token, token_prev, occured=False):
 #wtrącenia
 def check_gdzie(token, token_prev, occured=False):
     result = {"insert": True, "insert_pos": 0, "occured": occured}
-    if token_prev.test == 'tam':
+    if token_prev.text == 'tam':
         result["insert_pos"] = -1
 
     return result
