@@ -11,7 +11,7 @@ class CommaTester:
     """
 
     def __init__(self):
-        self.corrector: CommaCorrector = CommaCorrector()
+        self._corrector: CommaCorrector = CommaCorrector()
         self._data: str = ""
 
     @property
@@ -22,14 +22,10 @@ class CommaTester:
     def data(self, data: str) -> None:
         self._data = data
 
-    def _rate(self, corrected_sentence: str) -> dict[str, int]:
+    def _rate(self, corrected_doc: Language, data_doc: Language) -> dict[str, int]:
         """
         Rates correctness of corrected sentence.
         """
-
-        # create spaCy documents
-        data_doc: Language = self.corrector.create_doc(self._data)
-        corrected_doc: Language = self.corrector.create_doc(corrected_sentence)
 
         # create index for both documents
         data_pos: int = 0
@@ -64,15 +60,19 @@ class CommaTester:
 
     def test(self) -> dict[str, int]:
         # transform sentence to sentence without commas for testing purposes
-        cleared_sentence = self._data.replace(",", "")
+        no_commas_sentence = self._data.replace(",", "")
 
         # set sentence and sentence_doc in corrector
-        self.corrector.sentence = cleared_sentence
-        self.corrector.sentence_doc = self.corrector.create_doc(
-            cleared_sentence)
+        self._corrector.sentence = no_commas_sentence
+        self._corrector.sentence_doc = self._corrector.create_doc(
+            no_commas_sentence)
 
         # correct sentence and get result
-        result: str = self.corrector.correct()
+        corrected_sentence: str = self._corrector.correct()
+
+        corrected_doc: Language = self._corrector.create_doc(
+            corrected_sentence)
+        data_doc = self._corrector.create_doc(self._data)
 
         # return rated result in format {'correct': int, 'incorrect': int, 'missing': int}
-        return self._rate(result)
+        return self._rate(corrected_doc, data_doc)

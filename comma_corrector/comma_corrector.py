@@ -1,7 +1,6 @@
+import comma_corrector.rules as rules
 from spacy import load, Language
 import re
-
-import comma_corrector.rules as rules
 
 
 class CommaCorrector:
@@ -12,8 +11,8 @@ class CommaCorrector:
     def __init__(self, sentence: str = "") -> None:
         self._nlp: Language = load("pl_core_news_sm")
 
-        self.__sentence: str = sentence
-        self.__sentence_doc: Language = self.create_doc(self.__sentence)
+        self._sentence: str = sentence
+        self._sentence_doc: Language = self.create_doc(self._sentence)
 
         # get all rules from rules.py
         self._rules: dict = {rule[6:]: getattr(rules, rule) for rule in dir(
@@ -24,28 +23,27 @@ class CommaCorrector:
 
     @property
     def sentence(self) -> str:
-        return self.__sentence
+        return self._sentence
 
     @sentence.setter
     def sentence(self, sentence: str) -> None:
-        self.__sentence = sentence
+        self._sentence = sentence
 
     def create_doc(self, sentence: str) -> Language:
         """Creates spaCy document from given sentence."""
         return self._nlp(sentence)
-    
+
     def create_docs(self, sentences: list[str]) -> list[Language]:
         """Creates spaCy documents from given sentences."""
         return self._nlp.pipe(sentences)
 
     @property
     def sentence_doc(self) -> Language:
-        return self.__sentence_doc
+        return self._sentence_doc
 
     @sentence_doc.setter
     def sentence_doc(self, sentence_doc: Language) -> None:
-        self.__sentence_doc = sentence_doc
-
+        self._sentence_doc = sentence_doc
 
     @staticmethod
     def _join_sentence(sentence: list[str]) -> str:
@@ -66,8 +64,8 @@ class CommaCorrector:
 
         # transform spaCy document into list of words
         sentence_text: list[str] = [
-            token.text for token in self.__sentence_doc]
-        
+            token.text for token in self._sentence_doc]
+
         # shift is used to correct index of token in sentence, if comma was inserted
         shift: int = 0
 
@@ -75,7 +73,7 @@ class CommaCorrector:
         occured: dict[str, bool] = {key: False for key in self._rules_keys}
 
         # iterate over all tokens in sentence
-        for token in self.__sentence_doc:
+        for token in self._sentence_doc:
             index = token.i
 
             # skip first token, because it will never have a comma before it
@@ -85,10 +83,10 @@ class CommaCorrector:
             # skip if token is not in rules, because it is (probably) not a word, that can have comma before it
             if token.text not in self._rules_keys:
                 continue
-            
+
             # get result of rule check in format {'insert': bool, 'insert_pos': int, 'occured': bool}
             result = self._rules[token.text](
-                token, self.__sentence_doc[index - 1], occured[token.text])
+                token, self._sentence_doc[index - 1], occured[token.text])
 
             # set occured to True, if rule was used and it's possible to be an enumeration
             occured[token.text] = result['occured']
