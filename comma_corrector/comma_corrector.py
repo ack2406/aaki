@@ -5,14 +5,15 @@ import re
 
 class CommaCorrector:
     """
-    Corrects punctuation in given sentence.
+    Corrects punctuation in given sentences.
     """
 
-    def __init__(self, sentence: str = "") -> None:
+    def __init__(self, sentences: list[str] = []) -> None:
         self._nlp: Language = load("pl_core_news_sm")
 
-        self._sentence: str = sentence
-        self._sentence_doc: Language = self.create_doc(self._sentence)
+        self._sentences: list[str] = sentences
+        self._sentences_docs: list[Language] = self.create_docs(
+            self._sentences)
 
         # get all rules from rules.py
         self._rules: dict = {rule[6:]: getattr(rules, rule) for rule in dir(
@@ -22,28 +23,21 @@ class CommaCorrector:
         self._rules_keys: list[str] = [key for key in self._rules.keys()]
 
     @property
-    def sentence(self) -> str:
-        return self._sentence
+    def sentences(self) -> list[str]:
+        return self._sentences
 
-    @sentence.setter
-    def sentence(self, sentence: str) -> None:
-        self._sentence = sentence
+    @sentences.setter
+    def sentences(self, sentences: list[str]) -> None:
+        self._sentences = sentences
+        self._sentences_docs = self.create_docs(self._sentences)
 
-    def create_doc(self, sentence: str) -> Language:
-        """Creates spaCy document from given sentence."""
-        return self._nlp(sentence)
+    @property
+    def sentences_docs(self) -> list[Language]:
+        return self._sentences_docs
 
     def create_docs(self, sentences: list[str]) -> list[Language]:
         """Creates spaCy documents from given sentences."""
         return self._nlp.pipe(sentences)
-
-    @property
-    def sentence_doc(self) -> Language:
-        return self._sentence_doc
-
-    @sentence_doc.setter
-    def sentence_doc(self, sentence_doc: Language) -> None:
-        self._sentence_doc = sentence_doc
 
     @staticmethod
     def _join_sentence(sentence: list[str]) -> str:
@@ -54,7 +48,7 @@ class CommaCorrector:
 
         return sentence
 
-    def correct(self) -> str:
+    def _correct_sentence(self, sentence_doc) -> str:
         """
         Corrects punctuation in given sentence.
 
@@ -64,7 +58,7 @@ class CommaCorrector:
 
         # transform spaCy document into list of words
         sentence_text: list[str] = [
-            token.text for token in self._sentence_doc]
+            token.text for token in sentence_doc]
 
         # shift is used to correct index of token in sentence, if comma was inserted
         shift: int = 0
@@ -73,7 +67,7 @@ class CommaCorrector:
         occured: dict[str, bool] = {key: False for key in self._rules_keys}
 
         # iterate over all tokens in sentence
-        for token in self._sentence_doc:
+        for token in sentence_doc:
             index = token.i
 
             # skip first token, because it will never have a comma before it
@@ -86,7 +80,7 @@ class CommaCorrector:
 
             # get result of rule check in format {'insert': bool, 'insert_pos': int, 'occured': bool}
             result = self._rules[token.text](
-                token, self._sentence_doc[index - 1], occured[token.text])
+                token, sentence_doc[index - 1], occured[token.text])
 
             # set occured to True, if rule was used and it's possible to be an enumeration
             occured[token.text] = result['occured']
@@ -106,3 +100,14 @@ class CommaCorrector:
             shift += 1
 
         return self._join_sentence(sentence_text)
+
+    def run(self):
+        """Corrects punctuation in all sentences."""
+
+        if self._sentences == []:
+            raise Exception('No sentences were given.')
+
+        if self._sentences_docs == []:
+            raise Exception('No sentences docs were created.')
+
+        return [self._correct_sentence(sentence_doc) for sentence_doc in self._sentences_docs]
