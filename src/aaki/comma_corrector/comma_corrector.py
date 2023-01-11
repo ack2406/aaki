@@ -1,4 +1,4 @@
-import comma_corrector.rules as rules
+from . import rules
 from spacy import load, Language
 import re
 
