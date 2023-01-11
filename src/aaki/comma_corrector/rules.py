@@ -50,6 +50,11 @@ def check_oraz(token, token_prev, occured=False):
 def check_jak(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
+    # zaimek wprowadzający zdanie/wypowiedzenie podrzędne
+    # wyrażenie wprowadzające porównanie o charakterze dopowiedzenia
+    # wprowadza ono wyliczenie lub wyszczególnienie
+    # zarówno, jak; równie, jak; tak, jak i; tak, jak
+
     return result
 
 
@@ -79,6 +84,10 @@ def check_a(token, token_prev, occured=False):
 def check_niż(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
+    # spójnik wprowadza zdanie podrzędne
+    # spójnik wprowadza równoważnik zdania
+    # Nie stawiamy: spójnik występuje przed członem porównawczym w zdaniu pojedynczym
+
     return result
 
 
@@ -97,15 +106,16 @@ def check_albo(token, token_prev, occured=False):
 
     return result
 
-
+# zrobione
 def check_lecz(token, token_prev, occured=False):
     result = {"insert": True, "insert_pos": 0, "occured": occured}
 
     return result
 
-
 def check_ponieważ(token, token_prev, occured=False):
     result = {"insert": True, "insert_pos": 0, "occured": occured}
+
+    # zasada dotycząca stawiania przecinka po zdaniu składowym, gdy ponieważ stoi na początku na początku zdania złożonego
 
     return result
 
@@ -133,9 +143,13 @@ def check_i(token, token_prev, occured=False):
         result["insert"] = True
     return result
 
-
+# do zredagowania
 def check_bądź(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
+
+    # jeżeli occured to wstaw przecinek
+    if occured:
+        result["insert"] = True
 
     return result
 
@@ -220,12 +234,22 @@ def check_aż(token, token_prev, occured=False):
 def check_to(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
+    # spójnik - chyba git - sprawdza, czy jest jednym z dwóch rodzajów spójnika
+    if token.pos_ == 'CCONJ' or token.pos_ == 'SCONJ':
+        result["insert"] = True
+
     return result
 
 
 def check_jednak(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
     
+    # spójnik
+    if token.pos_ == 'CCONJ' or token.pos_ == 'SCONJ':
+        result["insert"] = True
+    # nie stawiamy przed partykułą
+    if token.pos_ == 'PART':
+        result["insert"] = False
 
     return result
 
@@ -249,15 +273,24 @@ def check_gdyż(token, token_prev, occured=False):
 def check_także(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
+    # przed "a także"
+    if token_prev.text == 'a':
+        result["insert_pos"] = -1
+        result["insert"] = True
+
     return result
 
 
 def check_tylko(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": True, "insert_pos": 0, "occured": occured}
+
+    # dla partykuły "tylko" nie wstawiamy przecinka
+    if token.pos_ == "PART":
+        result["insert"] = False
 
     return result
 
-
+# XD powodzenia
 def check_nawet(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
@@ -267,9 +300,16 @@ def check_nawet(token, token_prev, occured=False):
 def check_chociaż(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
+    # spójnik
+    if token.pos_ == 'CCONJ' or token.pos_ == 'SCONJ':
+        result["insert"] = True
+    # nie stawiamy przed partykułą
+    if token.pos_ == 'PART':
+        result["insert"] = False
+
     return result
 
-
+# zdania składowe, podrzędne i takie tam
 def check_jakby(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
@@ -277,13 +317,21 @@ def check_jakby(token, token_prev, occured=False):
 
 
 def check_skoro(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": True, "insert_pos": 0, "occured": occured}
+
+    # dodatkowe zasady dla:
+    ## pisane na początku zdania
+    ## pisane w środku zdania
 
     return result
 
-
+# zdanie pojedyncze
 def check_bowiem(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": True, "insert_pos": 0, "occured": occured}
+
+    # dodatkowe zasady dla:
+    ## przecinek przed całym wprowadzeniem
+    ## jeśli zdanie pojedyncze to brak przecinka
 
     return result
 
@@ -291,11 +339,20 @@ def check_bowiem(token, token_prev, occured=False):
 def check_stąd(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
+    # spójnik
+    if token.pos_ == 'CCONJ' or token.pos_ == 'SCONJ':
+        result["insert"] = True
+
+
     return result
 
 
 def check_dopóki(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": True, "insert_pos": 0, "occured": occured}
+
+    # dodatkowe zasady dla:
+    ## jeśli na początku zdania
+    ## jako składniki połączeń dopóki...,dopóty...; dopóki...,póty...; dopóty...,dopóki...
 
     return result
 
@@ -303,11 +360,18 @@ def check_dopóki(token, token_prev, occured=False):
 def check_choć(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
+    # spójnik
+    if token.pos_ == 'CCONJ' or token.pos_ == 'SCONJ':
+        result["insert"] = True
+    # nie stawiamy przed partykułą
+    if token.pos_ == 'PART':
+        result["insert"] = False
+
     return result
 
 
 def check_dlatego(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": True, "insert_pos": 0, "occured": occured}
 
     return result
 
@@ -315,31 +379,43 @@ def check_dlatego(token, token_prev, occured=False):
 def check_co(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
+    # co jest przed orzeczeniem
+    if token_prev.pos_ == 'VERB':
+        result["insert"] = True
+
+    # dodać zasady dla:
+    ## wprowadza zdanie składowe
+
     return result
 
-
+# Zdania składowe złożone, wystepuje razem z zaimkiem
 def check_w(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
     return result
 
 
+# zasadniczo nie stawia się przed nim przecinka, chyba że wprowadza wtrącenie
 def check_wraz(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
+
     return result
 
+# zasadniczo nie stawia się przed nim przecinka, chyba że wprowadza wtrącenie lub określa przyczynę
 def check_jako(token, token_prev, occured=False):
     result = {"insert": False, "insert_pos": 0, "occured": occured}
 
     return result
 
+# jeśli wystepuje na początku zdania złożonego, oddzielamy przecinkiem zdanie składowe
 def check_jeśli(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": True, "insert_pos": 0, "occured": occured}
 
     return result
 
+# jeśli wystepuje na początku zdania złożonego, oddzielamy przecinkiem zdanie składowe
 def check_jeżeli(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": True, "insert_pos": 0, "occured": occured}
 
     return result
