@@ -12,5 +12,19 @@ cd aaki
 pip install -r requirements.txt
 ```
 
-    
+# Tests
+
+To run tests, use `pytest`:
+
+```
+pytest
+```
+
+To run specific tests, use `pytest -k`:
+
+```
+pytest -k test_aby
+pytest -k test_oraz
+pytest -k test_ale
+```
 

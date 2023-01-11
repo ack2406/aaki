@@ -1,4 +1,4 @@
-from comma_corrector.comma_corrector import CommaCorrector
+from .comma_corrector import CommaCorrector
 from spacy import Language, tokens
 
 
