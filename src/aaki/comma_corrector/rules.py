@@ -419,3 +419,5 @@ def check_jeżeli(token, token_prev, occured=False):
     result = {"insert": True, "insert_pos": 0, "occured": occured}
 
     return result
+
+#this is a test
