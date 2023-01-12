@@ -1,5 +1,6 @@
 from ..test_comma_corrector import TestCommaCorrector
 
+
 class TestAby(TestCommaCorrector):
     def test_aby_conj(self):
         sentences = [
@@ -8,9 +9,9 @@ class TestAby(TestCommaCorrector):
             "Poszedł do sklepu, aby kupić słodycze.",
             "Nie mogła pozwolić sobie na to, aby wydać zbyt dużo pieniędzy."
         ]
-        
+
         self.assertSentences(sentences)
-    
+
     def test_tak_aby(self):
         sentences = [
             "Jechał szybko, tak aby zdążyli na samolot.",

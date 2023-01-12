@@ -1,5 +1,6 @@
 from ..test_comma_corrector import TestCommaCorrector
 
+
 class TestCzy(TestCommaCorrector):
     def test_czy_conj(self):
         sentences = [

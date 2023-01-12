@@ -1,5 +1,6 @@
 from ..test_comma_corrector import TestCommaCorrector
 
+
 class TestOraz(TestCommaCorrector):
     def test_oraz_conj(self):
         sentences = [
@@ -7,7 +8,7 @@ class TestOraz(TestCommaCorrector):
         ]
 
         self.assertSentences(sentences)
-    
+
     def test_oraz_other(self):
         sentences = [
             "Byli tam Piotrek, Agnieszka oraz Wojtek, oraz Maciej.",
