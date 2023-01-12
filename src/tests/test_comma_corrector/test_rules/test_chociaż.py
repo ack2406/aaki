@@ -23,3 +23,5 @@ class TestChociaż(TestCommaCorrector):
             "Mogłaś chociaż przeprosić.",
             "Daj mi chociaż dzisiaj spokój."
         ]
+
+        self.assertSentences(sentences)

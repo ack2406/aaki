@@ -24,3 +24,5 @@ class TestTylko(TestCommaCorrector):
             "Dzisiaj jest bardzo ciepło, tylko że wieje chłodny wiatr.",
             "Był niezwykle zdolny, tylko że bardzo leniwy."
         ]
+
+        self.assertSentences(sentences)
