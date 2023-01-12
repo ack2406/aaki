@@ -4,17 +4,27 @@
 
 ## Installation
 
-For now, there is no pip package, so you have to clone the repo and install the requirements manually.
-
 ```
-git clone https://github.com/ack2406/aaki
-cd aaki
-pip install -r requirements.txt
+pip install aaki
 ```
 
-# Tests
+## Usage
 
-To run tests, use `pytest`:
+```python
+from aaki import CommaCorrector
+
+
+corrector = CommaCorrector()
+
+corrector.sentences = [
+    "Ile dałby by zapomnieć Cię.",
+    "Wszystkie chwile te które są na nie."
+    ]
+
+corrector.run()
+```
+
+## Tests
 
 ```
 pytest
@@ -23,8 +33,11 @@ pytest
 To run specific tests, use `pytest -k`:
 
 ```
-pytest -k test_aby
-pytest -k test_oraz
-pytest -k test_ale
+pytest -k test_<rule>
 ```
 
+For example, to run tests for the rule `ponieważ`, use:
+
+```
+pytest -k test_ponieważ
+```
