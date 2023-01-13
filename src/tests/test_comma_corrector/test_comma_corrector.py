@@ -9,8 +9,7 @@ class TestCommaCorrector(unittest.TestCase):
     def assertSentences(self, sentences: list[str]) -> None:
         no_commas_sentences = [sentence.replace(',', '') for sentence in sentences]
 
-        self.corrector.sentences = no_commas_sentences
-        corrected_sentences = self.corrector.run()
+        corrected_sentences = self.corrector.correct(no_commas_sentences)
 
         for sentence, corrected_sentence in zip(sentences, corrected_sentences):
             with self.subTest(sentence=sentence, corrected_sentence=corrected_sentence):

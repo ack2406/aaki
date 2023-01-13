@@ -14,14 +14,6 @@ class CommaTester:
         self._corrector: CommaCorrector = CommaCorrector()
         self._sentences: list[str] = sentences
 
-    @property
-    def sentences(self) -> str:
-        return self._sentences
-
-    @sentences.setter
-    def sentences(self, sentences: str) -> None:
-        self._sentences = sentences
-
     def _rate_sentence(self, corrected_doc: Language, sentences_doc: Language) -> dict[str, int]:
         """
         Rates correctness of corrected sentence.
@@ -73,15 +65,12 @@ class CommaTester:
 
         return points
 
-    def run(self) -> dict[str, int]:
+    def test(self, sentences: list[str] = []) -> dict[str, int]:
         # transform sentences to sentences without commas
-        no_commas_sentences: list[str] = [sentence.replace(',', '') for sentence in self._sentences]
-
-        # set sentence and sentence_doc in corrector
-        self._corrector.sentences = no_commas_sentences
+        no_commas_sentences: list[str] = [sentence.replace(',', '') for sentence in sentences]
 
         # correct sentence and get result
-        corrected_sentences: str = self._corrector.run()
+        corrected_sentences: str = self._corrector.correct(no_commas_sentences)
 
         corrected_docs: Language = self._corrector.create_docs(
             corrected_sentences)

@@ -16,16 +16,17 @@ from aaki import CommaCorrector
 
 corrector = CommaCorrector()
 
-corrector.sentences = [
+sentences = [
     "Ile dałby by zapomnieć Cię.",
     "Wszystkie chwile te które są na nie."
     ]
 
-corrector.run()
+corrector.correct(sentences)
 ```
 
 ## Tests
 
+To run all tests, use:
 ```
 pytest
 ```

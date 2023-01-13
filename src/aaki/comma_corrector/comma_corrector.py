@@ -22,19 +22,6 @@ class CommaCorrector:
         # get all keys from rules dict
         self._rules_keys: list[str] = [key for key in self._rules.keys()]
 
-    @property
-    def sentences(self) -> list[str]:
-        return self._sentences
-
-    @sentences.setter
-    def sentences(self, sentences: list[str]) -> None:
-        self._sentences = sentences
-        self._sentences_docs = self.create_docs(self._sentences)
-
-    @property
-    def sentences_docs(self) -> list[Language]:
-        return self._sentences_docs
-
     def create_docs(self, sentences: list[str]) -> list[Language]:
         """Creates spaCy documents from given sentences."""
         return self._nlp.pipe(sentences)
@@ -42,8 +29,12 @@ class CommaCorrector:
     @staticmethod
     def _join_sentence(sentence: list[str]) -> str:
         """Joins list of words into sentence. Removes spaces before punctuation marks."""
+
+        # join words into sentence
         sentence = ' '.join(sentence)
 
+
+        # remove spaces before punctuation marks
         sentence = re.sub(r' ([.,?!:;])', r'\1', sentence)
 
         return sentence
@@ -101,13 +92,17 @@ class CommaCorrector:
 
         return self._join_sentence(sentence_text)
 
-    def run(self):
+    def correct(self, sentences: list[str] = []) -> list[str]:
         """Corrects punctuation in all sentences."""
 
-        if self._sentences == []:
-            raise Exception('No sentences were given.')
+        # if no sentences were given, raise ValueError
+        if sentences == []:
+            raise ValueError('Sentences list is empty.')
+        
+        # if sentences were given, set them as self._sentences
+        self._sentences = sentences
+        # create spaCy documents from sentences
+        self._sentences_docs = self.create_docs(self._sentences)
 
-        if self._sentences_docs == []:
-            raise Exception('No sentences docs were created.')
-
+        # correct punctuation in all sentences
         return [self._correct_sentence(sentence_doc) for sentence_doc in self._sentences_docs]
