@@ -17,7 +17,7 @@ from aaki import CommaCorrector
 corrector = CommaCorrector()
 
 sentences = [
-    "Ile dałby by zapomnieć Cię.",
+    "Ile dałbym by zapomnieć Cię.",
     "Wszystkie chwile te które są na nie."
     ]
 
