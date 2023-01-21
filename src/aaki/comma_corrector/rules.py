@@ -14,7 +14,7 @@ def check_aby(token, token_prev, occured=False):
 
 
 def check_czy(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
     if token.pos_ == 'CCONJ':
         pass
     elif token.pos_ == 'PART' and token_prev.pos_ != 'CCONJ' and token_prev.pos_ != 'PART':
@@ -25,7 +25,7 @@ def check_czy(token, token_prev, occured=False):
 
 
 def check_lub(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
     if occured:
         result["insert"] = True
     elif token.pos_ == 'CCONJ':
@@ -37,7 +37,7 @@ def check_lub(token, token_prev, occured=False):
 
 
 def check_oraz(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
     if occured:
         result["insert"] = True
     elif token.pos_ == 'CCONJ':
@@ -100,7 +100,7 @@ def check_ale(token, token_prev, occured=False):
 
 #kontekst (dopowiedzenie)
 def check_albo(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
     if occured:
         result["insert"] = True
 
@@ -138,14 +138,14 @@ def check_czyli(token, token_prev, occured=False):
 #współdzilene zdania
 # spójnik wynikowy
 def check_i(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
     if occured:
         result["insert"] = True
     return result
 
 # do zredagowania
 def check_bądź(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
 
     # jeżeli occured to wstaw przecinek
     if occured:
@@ -169,7 +169,7 @@ def check_bo(token, token_prev, occured=False):
 
 #nie kumam
 def check_ani(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
     if occured:
         result["insert"] = True
     return result
