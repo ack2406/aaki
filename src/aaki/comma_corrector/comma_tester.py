@@ -56,8 +56,10 @@ class CommaTester:
         """
 
         points: dict[str, int] = {"correct": 0, "incorrect": 0, "missing": 0}
+        corrected_docs = list(corrected_docs)
+        sentences_docs = list(sentences_docs)
 
-        for corrected_doc, sentences_doc in zip(corrected_docs, sentences_docs):
+        for corrected_doc, sentences_doc in zip(list(corrected_docs), list(sentences_docs)):
             result = self._rate_sentence(corrected_doc, sentences_doc)
             points["correct"] += result["correct"]
             points["incorrect"] += result["incorrect"]
@@ -74,7 +76,7 @@ class CommaTester:
 
         corrected_docs: Language = self._corrector.create_docs(
             corrected_sentences)
-        sentences_doc = self._corrector.create_docs(self._sentences)
+        sentences_doc = self._corrector.create_docs(sentences)
 
         # return rated result in format {'correct': int, 'incorrect': int, 'missing': int}
         return self._rate(corrected_docs, sentences_doc)
