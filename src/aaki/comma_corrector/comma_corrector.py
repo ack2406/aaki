@@ -90,6 +90,15 @@ class CommaCorrector:
             # increase shift by 1, because comma was inserted
             shift += 1
 
+        complex_tab = rules.complex_sentence(sentence_doc, sentence_text)
+        shift_complex = 0
+        for comma in complex_tab:
+            if sentence_text[comma - 1 + shift_complex] == ',':
+                continue
+            # insert comma result['insert_pos'] characters before token
+            sentence_text.insert(comma + shift_complex , ',')
+            shift_complex += 1
+
         return self._join_sentence(sentence_text)
 
     def correct(self, sentences: list[str] = []) -> list[str]:
