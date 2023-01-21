@@ -1,6 +1,6 @@
 from .comma_corrector import CommaCorrector
 from spacy import Language, tokens
-
+from . import rules as rls
 
 class CommaTester:
     """
@@ -49,7 +49,7 @@ class CommaTester:
             corrected_pos += 1
 
         return points
-    
+
     def _rate(self, corrected_docs: Language, sentences_docs: Language) -> dict[str, int]:
         """
         Rates correctness of corrected sentences.
@@ -69,7 +69,8 @@ class CommaTester:
 
     def test(self, sentences: list[str] = []) -> dict[str, int]:
         # transform sentences to sentences without commas
-        no_commas_sentences: list[str] = [sentence.replace(',', '') for sentence in sentences]
+        no_commas_sentences: list[str] = [
+            sentence.replace(',', '') for sentence in sentences]
 
         # correct sentence and get result
         corrected_sentences: str = self._corrector.correct(no_commas_sentences)
@@ -80,3 +81,28 @@ class CommaTester:
 
         # return rated result in format {'correct': int, 'incorrect': int, 'missing': int}
         return self._rate(corrected_docs, sentences_doc)
+
+    def test_distinct(self, sentences: list[str] = []) -> bool:
+        """
+        Tests distinct rules.
+        """
+
+        rules = {rule[6:]: getattr(rls, rule) for rule in dir(rls) if rule.startswith('check_')}
+
+        for key, value in rules.items():
+            print("checking rule: " + key )
+
+            # create list of sentences that contain rule as a word
+            sentences_with_rule = [sentence for sentence in sentences if key in sentence.split(" ")]
+
+            # if there are no sentences with rule, skip
+            if sentences_with_rule == []:
+                continue
+            
+            # set rule to be checked
+            self._corrector.rules = {key: value}
+
+            # print result
+            print(self.test(sentences_with_rule))
+            print()
+        return True
