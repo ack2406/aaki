@@ -8,7 +8,7 @@ class CommaCorrector:
     Corrects punctuation in given sentences.
     """
 
-    def __init__(self, sentences: list[str] = []) -> None:
+    def __init__(self, sentences: list[str] = [], rules=None) -> None:
         self._nlp: Language = load("pl_core_news_sm")
 
         self._sentences: list[str] = sentences
@@ -16,11 +16,23 @@ class CommaCorrector:
             self._sentences)
 
         # get all rules from rules.py
-        self._rules: dict = {rule[6:]: getattr(rules, rule) for rule in dir(
-            rules) if rule.startswith('check_')}
+        if rules is None:
+            self._rules: dict = {rule[6:]: getattr(rules, rule) for rule in dir(
+                rules) if rule.startswith('check_')}
+        else:
+            self._rules = rules
 
         # get all keys from rules dict
         self._rules_keys: list[str] = [key for key in self._rules.keys()]
+    
+    @property
+    def rules(self):
+        return self._rules
+    
+    @rules.setter
+    def rules(self, rules):
+        self._rules = rules
+        self._rules_keys = [key for key in self._rules.keys()]
 
     def create_docs(self, sentences: list[str]) -> list[Language]:
         """Creates spaCy documents from given sentences."""
@@ -89,6 +101,15 @@ class CommaCorrector:
 
             # increase shift by 1, because comma was inserted
             shift += 1
+
+        complex_tab = rules.complex_sentence(sentence_doc, sentence_text)
+        shift_complex = 0
+        for comma in complex_tab:
+            if sentence_text[comma - 1 + shift_complex] == ',':
+                continue
+            # insert comma result['insert_pos'] characters before token
+            sentence_text.insert(comma + shift_complex , ',')
+            shift_complex += 1
 
         return self._join_sentence(sentence_text)
 

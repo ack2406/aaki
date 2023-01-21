@@ -1,6 +1,6 @@
 from .comma_corrector import CommaCorrector
 from spacy import Language, tokens
-
+from . import rules as rls
 
 class CommaTester:
     """
@@ -49,15 +49,17 @@ class CommaTester:
             corrected_pos += 1
 
         return points
-    
+
     def _rate(self, corrected_docs: Language, sentences_docs: Language) -> dict[str, int]:
         """
         Rates correctness of corrected sentences.
         """
 
         points: dict[str, int] = {"correct": 0, "incorrect": 0, "missing": 0}
+        corrected_docs = list(corrected_docs)
+        sentences_docs = list(sentences_docs)
 
-        for corrected_doc, sentences_doc in zip(corrected_docs, sentences_docs):
+        for corrected_doc, sentences_doc in zip(list(corrected_docs), list(sentences_docs)):
             result = self._rate_sentence(corrected_doc, sentences_doc)
             points["correct"] += result["correct"]
             points["incorrect"] += result["incorrect"]
@@ -67,14 +69,40 @@ class CommaTester:
 
     def test(self, sentences: list[str] = []) -> dict[str, int]:
         # transform sentences to sentences without commas
-        no_commas_sentences: list[str] = [sentence.replace(',', '') for sentence in sentences]
+        no_commas_sentences: list[str] = [
+            sentence.replace(',', '') for sentence in sentences]
 
         # correct sentence and get result
         corrected_sentences: str = self._corrector.correct(no_commas_sentences)
 
         corrected_docs: Language = self._corrector.create_docs(
             corrected_sentences)
-        sentences_doc = self._corrector.create_docs(self._sentences)
+        sentences_doc = self._corrector.create_docs(sentences)
 
         # return rated result in format {'correct': int, 'incorrect': int, 'missing': int}
         return self._rate(corrected_docs, sentences_doc)
+
+    def test_distinct(self, sentences: list[str] = []) -> bool:
+        """
+        Tests distinct rules.
+        """
+
+        rules = {rule[6:]: getattr(rls, rule) for rule in dir(rls) if rule.startswith('check_')}
+
+        for key, value in rules.items():
+            print("checking rule: " + key )
+
+            # create list of sentences that contain rule as a word
+            sentences_with_rule = [sentence for sentence in sentences if key in sentence.split(" ")]
+
+            # if there are no sentences with rule, skip
+            if sentences_with_rule == []:
+                continue
+            
+            # set rule to be checked
+            self._corrector.rules = {key: value}
+
+            # print result
+            print(self.test(sentences_with_rule))
+            print()
+        return True

@@ -14,7 +14,7 @@ def check_aby(token, token_prev, occured=False):
 
 
 def check_czy(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
     if token.pos_ == 'CCONJ':
         pass
     elif token.pos_ == 'PART' and token_prev.pos_ != 'CCONJ' and token_prev.pos_ != 'PART':
@@ -25,7 +25,7 @@ def check_czy(token, token_prev, occured=False):
 
 
 def check_lub(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
     if occured:
         result["insert"] = True
     elif token.pos_ == 'CCONJ':
@@ -37,7 +37,7 @@ def check_lub(token, token_prev, occured=False):
 
 
 def check_oraz(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
     if occured:
         result["insert"] = True
     elif token.pos_ == 'CCONJ':
@@ -100,7 +100,7 @@ def check_ale(token, token_prev, occured=False):
 
 #kontekst (dopowiedzenie)
 def check_albo(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
     if occured:
         result["insert"] = True
 
@@ -138,14 +138,14 @@ def check_czyli(token, token_prev, occured=False):
 #współdzilene zdania
 # spójnik wynikowy
 def check_i(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
     if occured:
         result["insert"] = True
     return result
 
 # do zredagowania
 def check_bądź(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
 
     # jeżeli occured to wstaw przecinek
     if occured:
@@ -169,7 +169,7 @@ def check_bo(token, token_prev, occured=False):
 
 #nie kumam
 def check_ani(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": False, "insert_pos": 0, "occured": True}
     if occured:
         result["insert"] = True
     return result
@@ -419,3 +419,23 @@ def check_jeżeli(token, token_prev, occured=False):
     result = {"insert": True, "insert_pos": 0, "occured": occured}
 
     return result
+
+def complex_sentence(doc, sentence):
+    commas = []
+    for token in doc:
+        shift = 0
+        s_tree = list(token.subtree)
+        print(token.i, token.text, token.dep_, token.pos_, s_tree)
+        if len(s_tree) > 1 and token.dep_ != "ROOT":
+            if s_tree[0] == doc[0]:
+                while(s_tree[-1].text != sentence[token.i + shift]):
+                    shift += 1
+                    # print(shift)
+                shift += 1
+            else:
+                while(s_tree[0].text != sentence[token.i + shift]):
+                    shift -= 1
+            commas.append(token.i + shift)
+            print(sentence.append(str(token.i)))
+    print()
+    return sorted(commas)
