@@ -4,11 +4,25 @@
 
 ## Installation
 
+To run project locally, use:
+```
+git clone https://github.com/ack2406/aaki
+
+cd aaki
+
+pip install -r requirements.txt
+```
+
+
+
+To install the package, use:
 ```
 pip install aaki
 ```
 
 ## Usage
+
+If you want to play with the code, the best way is to create `.py` file inside `src` directory and use the code below.
 
 ```python
 from aaki import CommaCorrector
