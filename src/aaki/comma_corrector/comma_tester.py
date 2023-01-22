@@ -90,8 +90,6 @@ class CommaTester:
         rules = {rule[6:]: getattr(rls, rule) for rule in dir(rls) if rule.startswith('check_')}
 
         for key, value in rules.items():
-            print("checking rule: " + key )
-
             # create list of sentences that contain rule as a word
             sentences_with_rule = [sentence for sentence in sentences if key in sentence.split(" ")]
 

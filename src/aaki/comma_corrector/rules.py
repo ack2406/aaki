@@ -425,17 +425,13 @@ def complex_sentence(doc, sentence):
     for token in doc:
         shift = 0
         s_tree = list(token.subtree)
-        print(token.i, token.text, token.dep_, token.pos_, s_tree)
         if len(s_tree) > 1 and token.dep_ != "ROOT":
             if s_tree[0] == doc[0]:
                 while(s_tree[-1].text != sentence[token.i + shift]):
                     shift += 1
-                    # print(shift)
                 shift += 1
             else:
                 while(s_tree[0].text != sentence[token.i + shift]):
                     shift -= 1
             commas.append(token.i + shift)
-            print(sentence.append(str(token.i)))
-    print()
     return sorted(commas)
