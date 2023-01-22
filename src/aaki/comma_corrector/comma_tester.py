@@ -82,7 +82,7 @@ class CommaTester:
         # return rated result in format {'correct': int, 'incorrect': int, 'missing': int}
         return self._rate(corrected_docs, sentences_doc)
 
-    def test_distinct(self, sentences: list[str] = []) -> bool:
+    def test_distinct(self, sentences: list[str] = []) -> dict[str, dict[str, int]]:
         """
         Tests distinct rules.
         """
@@ -102,7 +102,4 @@ class CommaTester:
             # set rule to be checked
             self._corrector.rules = {key: value}
 
-            # print result
-            print(self.test(sentences_with_rule))
-            print()
-        return True
+            yield {key: self.test(sentences_with_rule)}
