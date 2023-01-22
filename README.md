@@ -16,6 +16,10 @@ pip install -r requirements.txt
 
 If you want to play with the code, run `example.py`:
 
+```bash
+python3 src/example.py
+```
+
 To install the package, use:
 
 ```bash
@@ -23,10 +27,6 @@ pip install aaki
 ```
 
 ## Usage
-
-```python
-python3  src/example.py
-```
 
 ```python
 from aaki import CommaCorrector
