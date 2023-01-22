@@ -107,6 +107,10 @@ class CommaCorrector:
         for comma in complex_tab:
             if sentence_text[comma - 1 + shift_complex] == ',':
                 continue
+            if sentence_text[comma + shift_complex] == ',':
+                continue
+            if comma + shift_complex + 1 == len(sentence_text):
+                continue
             # insert comma result['insert_pos'] characters before token
             sentence_text.insert(comma + shift_complex , ',')
             shift_complex += 1
