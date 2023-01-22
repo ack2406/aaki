@@ -5,7 +5,8 @@
 ## Installation
 
 To run project locally, use:
-```
+
+```bash
 git clone https://github.com/ack2406/aaki
 
 cd aaki
@@ -13,16 +14,19 @@ cd aaki
 pip install -r requirements.txt
 ```
 
-
+If you want to play with the code, run `example.py`:
 
 To install the package, use:
-```
+
+```bash
 pip install aaki
 ```
 
 ## Usage
 
-If you want to play with the code, the best way is to create `.py` file inside `src` directory and use the code below.
+```python
+python3  src/example.py
+```
 
 ```python
 from aaki import CommaCorrector
@@ -35,24 +39,27 @@ sentences = [
     "Wszystkie chwile te które są na nie."
     ]
 
-corrector.correct(sentences)
+corrected_sentences = corrector.correct(sentences)
+
+print(corrected_sentences)
 ```
 
 ## Tests
 
 To run all tests, use:
-```
+
+```bash
 pytest
 ```
 
 To run specific tests, use `pytest -k`:
 
-```
+```bash
 pytest -k test_<rule>
 ```
 
 For example, to run tests for the rule `ponieważ`, use:
 
-```
+```bash
 pytest -k test_ponieważ
 ```
