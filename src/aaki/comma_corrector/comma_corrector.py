@@ -1,4 +1,4 @@
-from . import rules
+from . import rules as rls
 from spacy import load, Language
 import re
 
@@ -17,8 +17,8 @@ class CommaCorrector:
 
         # get all rules from rules.py
         if rules is None:
-            self._rules: dict = {rule[6:]: getattr(rules, rule) for rule in dir(
-                rules) if rule.startswith('check_')}
+            self._rules: dict = {rule[6:]: getattr(rls, rule) for rule in dir(
+                rls) if rule.startswith('check_')}
         else:
             self._rules = rules
 
@@ -102,7 +102,7 @@ class CommaCorrector:
             # increase shift by 1, because comma was inserted
             shift += 1
 
-        complex_tab = rules.complex_sentence(sentence_doc, sentence_text)
+        complex_tab = rls.complex_sentence(sentence_doc, sentence_text)
         shift_complex = 0
         for comma in complex_tab:
             if sentence_text[comma - 1 + shift_complex] == ',':
