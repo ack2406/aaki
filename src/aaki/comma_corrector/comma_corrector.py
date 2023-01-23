@@ -1,6 +1,8 @@
-from . import rules as rls
-from spacy import load, Language
 import re
+
+from spacy import Language, load
+
+from . import rules as rls
 
 
 class CommaCorrector:
@@ -107,7 +109,7 @@ class CommaCorrector:
         for comma in complex_tab:
             if sentence_text[comma - 1 + shift_complex] == ',':
                 continue
-            if sentence_text[comma + shift_complex] == ',':
+            if comma + shift_complex < len(sentence_text) and sentence_text[comma + shift_complex] == ',':
                 continue
             if comma + shift_complex + 1 == len(sentence_text):
                 continue

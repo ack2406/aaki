@@ -1,6 +1,8 @@
-from .comma_corrector import CommaCorrector
 from spacy import Language, tokens
+
 from . import rules as rls
+from .comma_corrector import CommaCorrector
+
 
 class CommaTester:
     """
