@@ -73,9 +73,9 @@ def check_że(token, token_prev, occured=False):
 
 
 def check_a(token, token_prev, occured=False):
-    result = {"insert": False, "insert_pos": 0, "occured": occured}
+    result = {"insert": True, "insert_pos": 0, "occured": occured}
     if token.pos_ == 'CCONJ' and token_prev.pos_ != 'PART':
-        pass
+        result["insert"] = False
     elif token.pos_ == 'PART' and token_prev.pos_ != 'CCONJ' and token_prev.pos_ != 'PART':
         result["insert"] = True
     return result
@@ -138,6 +138,7 @@ def check_czyli(token, token_prev, occured=False):
 #współdzilene zdania
 # spójnik wynikowy
 def check_i(token, token_prev, occured=False):
+
     result = {"insert": False, "insert_pos": 0, "occured": True}
     if occured:
         result["insert"] = True
@@ -425,7 +426,9 @@ def complex_sentence(doc, sentence):
     for token in doc:
         shift = 0
         s_tree = list(token.subtree)
-        if len(s_tree) > 1 and token.dep_ != "ROOT":
+        if s_tree[0].text == "i":
+            continue
+        if len(s_tree) > 1 and token.dep_ != "ROOT" and token.pos_ in ["AUX", "VERB"]:
             if s_tree[0] == doc[0]:
                 while(s_tree[-1].text != sentence[token.i + shift]):
                     shift += 1
