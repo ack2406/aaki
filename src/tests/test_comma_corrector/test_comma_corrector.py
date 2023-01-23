@@ -11,6 +11,4 @@ class TestCommaCorrector(unittest.TestCase):
 
         corrected_sentences = self.corrector.correct(no_commas_sentences)
 
-        for sentence, corrected_sentence in zip(sentences, corrected_sentences):
-            with self.subTest(sentence=sentence, corrected_sentence=corrected_sentence):
-                self.assertEqual(corrected_sentence, sentence)
+        assert sentences == corrected_sentences

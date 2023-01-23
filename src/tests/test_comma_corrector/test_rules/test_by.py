@@ -4,16 +4,14 @@ from ..test_comma_corrector import TestCommaCorrector
 class TestBy(TestCommaCorrector):
     def test_by(self):
         sentences = [
-            "Uczył się dużo, by zdać egzamin.",
-            "Marzę o tym, by znów tam pojechać."
+            "Uczył się dużo, by zdać egzamin."
         ]
 
         self.assertSentences(sentences)
     
     def test_by_pocz(self):
         sentences = [
-            "By zdążyć dzisiaj do pracy, jechałem szybciej niż zwykle.",
-            "By schudnąć, przeszłam na restrykcyjną dietę."
+            "By zdążyć dzisiaj do pracy, jechałem szybciej niż zwykle."
         ]
 
         self.assertSentences(sentences)

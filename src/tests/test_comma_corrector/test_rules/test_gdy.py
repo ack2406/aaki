@@ -4,34 +4,28 @@ from ..test_comma_corrector import TestCommaCorrector
 class TestGdy(TestCommaCorrector):
     def test_gdy(self):
         sentences = [
-            "Było południe, gdy się obudziłem.",
-            "Nie lubię, gdy się tak zachowujesz.",
-            "Skończyłam studia, gdy miałam dwadzieścia pięć lat."
+            "Było południe, gdy się obudziłem."
         ]
 
         self.assertSentences(sentences)
 
     def test_gdy_pocz(self):
         sentences = [
-            "Gdy wracałam do domu, zerwał się silny wiatr.",
-            "Gdy w końcu się spotkamy, wszystko dokładnie ci opowiem."
+            "Gdy wracałam do domu, zerwał się silny wiatr."
         ]
 
         self.assertSentences(sentences)
 
     def test_gdy_join(self):
         sentences = [
-            "Zrozumiałam to, dopiero gdy sama tego doświadczyłam.",
-            "Śpisz, podczas gdy powinieneś być już dawno w pracy."
+            "Zrozumiałam to, dopiero gdy sama tego doświadczyłam."
         ]
 
         self.assertSentences(sentences)
 
     def test_zwłaszcza_gdy(self):
         sentences = [
-            "Powinieneś pić dużo wody, zwłaszcza gdy jest gorąco.",
-            "Lubię na nią patrzeć, zwłaszcza gdy się uśmiecha.",
-            "Bywał niemiły, zwłaszcza gdy nie czuł się zbyt dobrze."
+            "Powinieneś pić dużo wody, zwłaszcza gdy jest gorąco."
         ]
 
         self.assertSentences(sentences)

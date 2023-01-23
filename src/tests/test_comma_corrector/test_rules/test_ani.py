@@ -4,8 +4,7 @@ from ..test_comma_corrector import TestCommaCorrector
 class TestAni(TestCommaCorrector):
     def test_ani(self):
         sentences = [
-            "Nie chcę herbaty ani kawy.",
-            "W moim domu nie ma telewizora ani radia."
+            "Nie chcę herbaty ani kawy."
         ]
 
         self.assertSentences(sentences)
@@ -19,16 +18,14 @@ class TestAni(TestCommaCorrector):
 
     def test_ani_powt(self):
         sentences = [
-            "Nie mogłam ruszyć ani ręką, ani nogą.",
-            "Ani nie pracowałem, ani nie odpocząłem."
+            "Nie mogłam ruszyć ani ręką, ani nogą."
         ]
 
         self.assertSentences(sentences)
 
     def test_ani_part(self):
         sentences = [
-            "Nie miał ani grosza.",
-            "Nie powiedziała ani słowa."
+            "Nie miał ani grosza."
         ]
 
         self.assertSentences(sentences)

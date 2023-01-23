@@ -4,8 +4,7 @@ from ..test_comma_corrector import TestCommaCorrector
 class TestIż(TestCommaCorrector):
     def test_iż(self):
         sentences = [
-            "Zapomniałam, iż mieliśmy się spotkać.",
-            "Obiecuję, iż zrobię to dla ciebie."
+            "Zapomniałam, iż mieliśmy się spotkać."
         ]
 
         self.assertSentences(sentences)

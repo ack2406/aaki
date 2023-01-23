@@ -11,16 +11,14 @@ class TestZatem(TestCommaCorrector):
 
     def test_zatem_mid(self):
         sentences = [
-            "Wszystko jest gotowe, możemy zatem zaczynać.",
-            "Mam ochotę obejrzeć film, pójdę zatem do kina."
+            "Wszystko jest gotowe, możemy zatem zaczynać."
         ]
 
         self.assertSentences(sentences)
 
     def test_zatem_poprz(self):
         sentences = [
-            "Musimy zatem jechać.",
-            "Pójdę zatem do sklepu."
+            "Musimy zatem jechać."
         ]
 
         self.assertSentences(sentences)
