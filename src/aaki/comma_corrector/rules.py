@@ -137,11 +137,25 @@ def check_czyli(token, token_prev, occured=False):
 
 #współdzilene zdania
 # spójnik wynikowy
-def check_i(token, token_prev, occured=False):
-
-    result = {"insert": False, "insert_pos": 0, "occured": True}
-    if occured:
-        result["insert"] = True
+def i_test(sentence):
+    comma_list = [False]
+    tmp = sentence.split(" i ")
+    if len(tmp) > 2:
+        for t in range(len(tmp)):
+            if t == 0:
+                comma_list.append(False)
+            else:
+                if "," in tmp[t-1]:
+                    comma_list.append(False)
+                else:
+                    comma_list.append(True)
+    result = tmp[0] 
+    for i in range(1,  len(comma_list)-1): 
+        if comma_list[i-1]:
+            result += ', i '
+        else:
+            result += ' i '
+        result += tmp[i]
     return result
 
 # do zredagowania

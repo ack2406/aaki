@@ -71,6 +71,7 @@ class CommaCorrector:
         # occured is used to check if rule was already used. Used to check for enumeration.
         occured: dict[str, bool] = {key: False for key in self._rules_keys}
 
+        i_occured = False
         # iterate over all tokens in sentence
         for token in sentence_doc:
             index = token.i
@@ -78,6 +79,8 @@ class CommaCorrector:
             # skip first token, because it will never have a comma before it
             if index == 0:
                 continue
+            if token.text == "i":
+                i_occured = True
 
             # skip if token is not in rules, because it is (probably) not a word, that can have comma before it
             if token.text not in self._rules_keys:
@@ -116,8 +119,11 @@ class CommaCorrector:
             # insert comma result['insert_pos'] characters before token
             sentence_text.insert(comma + shift_complex , ',')
             shift_complex += 1
+        sentence_text = self._join_sentence(sentence_text)
+        if i_occured:
+            sentence_text = rls.i_test(sentence_text)
 
-        return self._join_sentence(sentence_text)
+        return sentence_text
 
     def correct(self, sentences: list[str] = []) -> list[str]:
         """Corrects punctuation in all sentences."""
