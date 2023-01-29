@@ -149,8 +149,10 @@ def i_test(sentence):
                     comma_list.append(False)
                 else:
                     comma_list.append(True)
+    else:
+        return sentence
     result = tmp[0] 
-    for i in range(1,  len(comma_list)-1): 
+    for i in range(1,  len(tmp)): 
         if comma_list[i-1]:
             result += ', i '
         else:
